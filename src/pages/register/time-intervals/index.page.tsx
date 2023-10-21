@@ -1,4 +1,4 @@
-import { getWeekDays } from '@/utils/get-week-days'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import {
   Button,
   Checkbox,
@@ -8,8 +8,9 @@ import {
   TextInput,
 } from '@ignite-ui/react'
 import { ArrowRight } from 'phosphor-react'
-import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+import { getWeekDays } from '@/utils/get-week-days'
 
 import { Container, Header } from '../styles'
 import {
@@ -28,6 +29,7 @@ export default function TimeIntervals() {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
+    watch,
   } = useForm({
     defaultValues: {
       intervals: [
@@ -50,6 +52,7 @@ export default function TimeIntervals() {
   async function handleSetTimeIntervals() {}
 
   const weekDays = getWeekDays()
+  const intervals = watch('intervals')
 
   return (
     <Container>
@@ -69,23 +72,38 @@ export default function TimeIntervals() {
             return (
               <IntervalItem key={field.id}>
                 <IntervalDay>
-                  <Checkbox />
+                  <Controller
+                    name={`intervals.${index}.enabled`}
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox
+                        onCheckedChange={(checked) =>
+                          field.onChange(checked === true)
+                        }
+                        checked={field.value}
+                      />
+                    )}
+                  />
                   <Text>{weekDays[field.weekDay]}</Text>
                 </IntervalDay>
+
                 <IntervalInput>
                   <TextInput
                     size="sm"
                     type="time"
                     step={60}
+                    disabled={intervals[index].enabled === false}
                     {...register(`intervals.${index}.startTime`)}
                     crossOrigin
                   />
+
                   <TextInput
                     size="sm"
                     type="time"
                     step={60}
-                    crossOrigin
+                    disabled={intervals[index].enabled === false}
                     {...register(`intervals.${index}.endTime`)}
+                    crossOrigin
                   />
                 </IntervalInput>
               </IntervalItem>
