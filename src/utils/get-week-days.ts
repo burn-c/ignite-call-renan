@@ -5,8 +5,8 @@ function captalize(string: string) {
 export function getWeekDays() {
   const formatter = new Intl.DateTimeFormat('pt-BR', { weekday: 'long' })
 
-  const arrayDays = Array.from(Array(7).keys()).map((day) =>
-    formatter.format(new Date(Date.UTC(2023, 5, day))),
+  const arrayDays = Array.from(Array(7).keys()).map(
+    (day) => formatter.format(new Date(Date.UTC(2021, 5, day))), // Data precisa iniciar no primeiro dia da semana ( Domingo)
   )
 
   return arrayDays.map((day) => captalize(day))
