@@ -24,7 +24,8 @@
       ],
       "@assets/*": [
         "./public/assets/*"
-      ]
+      ],
+      "@lib/*": ["./src/lib/*"],
     },
     "forceConsistentCasingInFileNames": true
   },
