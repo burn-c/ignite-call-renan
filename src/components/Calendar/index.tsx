@@ -32,6 +32,7 @@ interface CalendarProps {
 }
 
 interface BlockedDates {
+  blockedDates: number[]
   blockedWeekDays: number[]
 }
 
@@ -67,7 +68,7 @@ export function Calendar({ onDateSelected, selectedDate }: CalendarProps) {
       const response = await api.get(`/users/${username}/blocked-dates`, {
         params: {
           year: currentDate.get('year'),
-          month: currentDate.get('month'),
+          month: currentDate.get('month') + 1, // Info: On MySQL first month is 1 and JS is 0
         },
       })
 
@@ -116,7 +117,8 @@ export function Calendar({ onDateSelected, selectedDate }: CalendarProps) {
           date,
           disabled:
             date.endOf('day').isBefore(new Date()) ||
-            blockedDates?.blockedWeekDays?.includes(date.get('day')),
+            blockedDates?.blockedWeekDays?.includes(date.get('day')) ||
+            blockedDates.blockedDates.includes(date.get('date')),
         }
       }),
       ...nextMonthFillArray.map((date) => {
