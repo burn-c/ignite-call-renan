@@ -35,6 +35,22 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
+## Preparando banco de dados
+
+### 1 - Criar MySQL no Docker
+
+```bash
+docker run --name mysql-burn-call -e MYSQL_ROOT_PASSWORD=docker -p 3306:3306 mysql:latest
+
+```
+
+### 2 - Rodando migrations
+```bash
+npx prisma migrate dev
+
+```
+*Obs.: Antes de rodar as migrations conferir se a pasta `prisma/migrations/` foi deletada e se o arquivo `/prisma/dev.db`.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
