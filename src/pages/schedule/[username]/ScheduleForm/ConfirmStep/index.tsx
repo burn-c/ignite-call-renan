@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { CalendarBlank, Clock } from 'phosphor-react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -8,12 +9,14 @@ import { Button, Text, TextArea, TextInput } from '@ignite-ui/react'
 
 import { ConfirmForm, FormActions, FormError, FormHeader } from './styles'
 
+import { api } from '@/lib/axios'
+
 const confirmFormSchema = z.object({
   name: z
     .string()
     .min(3, { message: 'O nome precisa de no mínimo 3 caracteres.' }),
   email: z.string().email({ message: 'Digite um e-mail válido.' }),
-  observations: z.string().nullable(),
+  observation: z.string().nullable(),
 })
 
 type ConfirmFormData = z.infer<typeof confirmFormSchema>
@@ -35,8 +38,20 @@ export default function ConfirmStep({
     resolver: zodResolver(confirmFormSchema),
   })
 
-  function handleConfirmScheduling(data: ConfirmFormData) {
-    console.log(data)
+  const router = useRouter()
+  const username = String(router.query.username)
+
+  async function handleConfirmScheduling(data: ConfirmFormData) {
+    const { email, name, observation } = data
+
+    await api.post(`/users/${username}/schedule`, {
+      email,
+      name,
+      observation,
+      date: schedulingDate,
+    })
+
+    onCancelConfirmation()
   }
 
   const describeDate = dayjs(schedulingDate).format('DD[ de ]MMMM[ de ]YYYY')
@@ -85,7 +100,7 @@ export default function ConfirmStep({
 
       <label>
         <Text size="sm">Observações</Text>
-        <TextArea {...register('observations')} />
+        <TextArea {...register('observation')} />
       </label>
 
       <FormActions>
