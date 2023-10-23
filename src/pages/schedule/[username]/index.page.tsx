@@ -6,6 +6,8 @@ import { Avatar, Heading, Text } from '@ignite-ui/react'
 
 import { Container, UserHeader } from './styles'
 
+import ScheduleForm from './ScheduleForm'
+
 interface ScheduleProps {
   user: {
     name: string
@@ -24,9 +26,12 @@ export default function Schedule({
         <Heading>{name}</Heading>
         <Text>{bio}</Text>
       </UserHeader>
+
+      <ScheduleForm />
     </Container>
   )
 }
+
 export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
