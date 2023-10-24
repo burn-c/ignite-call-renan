@@ -35,7 +35,7 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Preparando banco de dados
+## Preparando banco de dados com Docker
 
 ### 1 - Criar MySQL no Docker
 
@@ -49,7 +49,16 @@ docker run --name mysql-burn-call -e MYSQL_ROOT_PASSWORD=docker -p 3306:3306 mys
 npx prisma migrate dev
 
 ```
-*Obs.: Antes de rodar as migrations conferir se a pasta `prisma/migrations/` foi deletada e se o arquivo `/prisma/dev.db`.
+⚠️ - *Obs.: Antes de rodar as migrations conferir se a pasta `prisma/migrations/` foi deletada e se o arquivo `/prisma/dev.db`.
+
+## Preparando banco de dados com PlanetScale
+### 1 - Executar migrations no PlanetScale
+```bash
+npx prisma db push
+```
+
+⚠️ - *Obs.: Antes de rodar o `push` você precisa rodar as migrations localmente, pois o PlanetScale não suporta gerar as migrations apenas fazer uma "cópia" das existentes.
+
 
 ## Deploy on Vercel
 
