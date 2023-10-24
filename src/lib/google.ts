@@ -1,13 +1,12 @@
 /* eslint-disable camelcase */
 import dayjs from 'dayjs'
 import { google } from 'googleapis'
-
 import { prisma } from './prisma'
 
 export async function getGoogleOAuthToken(userId: string) {
   const account = await prisma.account.findFirstOrThrow({
     where: {
-      provider: 'Google',
+      provider: 'google',
       user_id: userId,
     },
   })
@@ -56,10 +55,10 @@ export async function getGoogleOAuthToken(userId: string) {
 
     auth.setCredentials({
       access_token,
-      expiry_date,
       refresh_token,
+      expiry_date: account.expires_at,
     })
-
-    return auth
   }
+
+  return auth
 }
