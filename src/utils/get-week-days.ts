@@ -1,7 +1,7 @@
 function captalize(string: string, numberOfLetters: number) {
   return (
     string.substring(0, numberOfLetters).toUpperCase() +
-    string.substring(numberOfLetters + 1)
+    string.substring(numberOfLetters)
   )
 }
 

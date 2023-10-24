@@ -6,3 +6,6 @@
 
 ## NEXT.js API
 - [ ] - Tratamento com try/catch caso dê algum erro nas consultas do DB ou validações que ainda não foram tratadas.
+
+## App
+- [x] - Corrigir nome dos dias da semana do passo 3, está cortando a segunda letra.
