@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-
-import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import dayjs from 'dayjs'
+import { google } from 'googleapis'
+
+import { prisma } from '@/lib/prisma'
+import { getGoogleOAuthToken } from '@/lib/google'
 
 export default async function handle(
   req: NextApiRequest,
@@ -54,13 +56,43 @@ export default async function handle(
     })
   }
 
-  await prisma.scheduling.create({
+  const schedule = await prisma.scheduling.create({
     data: {
       email,
       name,
       observation,
       user_id: user.id,
       date: schedulingDate.toDate(),
+    },
+  })
+
+  const calendar = google.calendar({
+    version: 'v3',
+    auth: await getGoogleOAuthToken(user.id),
+  })
+
+  await calendar.events.insert({
+    calendarId: 'primary',
+    conferenceDataVersion: 1,
+    requestBody: {
+      summary: `Burn Call ${name}`,
+      description: observation,
+      start: {
+        dateTime: schedulingDate.format(),
+      },
+      end: {
+        dateTime: schedulingDate.add(1, 'hour').format(),
+      },
+      attendees: [{ email, displayName: name }],
+      // Create a meet link
+      conferenceData: {
+        createRequest: {
+          requestId: schedule.id,
+          conferenceSolutionKey: {
+            type: 'hangoutsMeet',
+          },
+        },
+      },
     },
   })
 
