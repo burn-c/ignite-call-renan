@@ -9,3 +9,6 @@
 
 ## App
 - [x] - Corrigir nome dos dias da semana do passo 3, está cortando a segunda letra.
+
+## UX/UI
+- [ ] - Reponsividade do canlendario
