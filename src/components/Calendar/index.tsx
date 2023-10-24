@@ -27,7 +27,6 @@ interface CalendarWeek {
 type CalendarWeeks = CalendarWeek[]
 
 interface CalendarProps {
-  selectedDate: Date | null
   onDateSelected: (date: Date) => void
 }
 
@@ -36,7 +35,7 @@ interface BlockedDates {
   blockedWeekDays: number[]
 }
 
-export function Calendar({ onDateSelected, selectedDate }: CalendarProps) {
+export function Calendar({ onDateSelected }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(() => dayjs().set('date', 1))
 
   const router = useRouter()
